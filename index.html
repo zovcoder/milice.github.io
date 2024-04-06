@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milice</title>
+    <link rel="shortcut icon" type="image/x-icon" href="ame.ico">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+        body {
+            background-image: url('IMG_7479.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        img {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: 200px;
+            height: auto;
+            z-index: 9999;
+            transition: transform 0.3s ease;
+        }
+        img:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <img id="gif" src='3dgifmaker20448.gif' alt='3D GIF'>
+  
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        let drops = [];
+
+        function setup() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            for (let i = 0; i < 500; i++) {
+                drops[i] = {
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    speed: 5 + Math.random() * 5,
+                    length: Math.random() * 20
+                };
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < drops.length; i++) {
+                const drop = drops[i];
+
+                ctx.beginPath();
+                ctx.moveTo(drop.x, drop.y);
+                ctx.lineTo(drop.x, drop.y + drop.length);
+                ctx.strokeStyle = 'rgba(174, 194, 224, 0.5)';
+                ctx.stroke();
+
+                drop.y += drop.speed;
+
+                if (drop.y > canvas.height) {
+                    drop.y = -20;
+                }
+            }
+        }
+
+        setup();
+        setInterval(draw, 30);
+
+        // Добавляем обработчики событий для изменения размера гифки
+        const gif = document.getElementById('gif');
+
+        gif.addEventListener('mouseenter', () => {
+            gif.style.transform = 'scale(1.1)';
+        });
+
+        gif.addEventListener('mouseleave', () => {
+            gif.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html>
